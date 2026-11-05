@@ -38,6 +38,78 @@ body {
   background: #c2851d;
 }
 
+/* Futuristic 3D Glass & Neon System */
+.glass-futuristic {
+  background: linear-gradient(135deg, rgba(42, 10, 28, 0.6) 0%, rgba(18, 4, 13, 0.8) 50%, rgba(30, 8, 22, 0.65) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(246, 216, 128, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 0 20px rgba(223, 166, 42, 0.08);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-futuristic:hover {
+  border-color: rgba(246, 216, 128, 0.7);
+  box-shadow: 0 30px 65px rgba(0, 0, 0, 0.85), 0 0 35px rgba(223, 166, 42, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 0 25px rgba(223, 166, 42, 0.15);
+  transform: translateY(-4px);
+}
+
+.glass-pedestal {
+  background: linear-gradient(145deg, rgba(28, 6, 18, 0.75) 0%, rgba(12, 3, 8, 0.9) 100%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(223, 166, 42, 0.35);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(223, 166, 42, 0.2), inset 0 1px 0 rgba(255, 248, 220, 0.25);
+  transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glass-pedestal:hover {
+  border-color: rgba(246, 216, 128, 0.85);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 45px rgba(223, 166, 42, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateY(-6px);
+}
+
+@keyframes floatSmooth {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+
+@keyframes orbitSpin {
+  0% {
+    transform: rotateX(65deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(65deg) rotateZ(360deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+.animate-float-smooth {
+  animation: floatSmooth 6s ease-in-out infinite;
+}
+
+.animate-orbit-spin {
+  animation: orbitSpin 25s linear infinite;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
 /* 3D Perspective Stage for Carousel */
 .carousel-stage-3d {
   perspective: 1200px;

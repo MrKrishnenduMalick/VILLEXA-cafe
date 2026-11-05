@@ -51,34 +51,46 @@ export default function SignaturePreview() {
           <ChevronLeft className="w-5 h-5" />
         </button>
 
-        {/* 3 Compact Glowing Dessert Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full">
+        {/* 3 Compact 3D Futuristic Glass Dessert Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-7 w-full">
           {signatureItems.map((product) => (
             <Link
               key={product.id}
               href="/menu"
-              className="group relative rounded-2xl glass-gold-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1.5 transition-all duration-300"
+              className="group relative rounded-3xl glass-futuristic p-5 flex flex-col justify-between hover:-translate-y-2.5 transition-all duration-400"
             >
+              {/* Top Specular Glass Highlight */}
+              <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-gold-300/80 to-transparent pointer-events-none" />
+
               {/* Image Frame with glowing border */}
-              <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 border border-gold-500/30 shadow-xl bg-eclat-950/60">
+              <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4 border border-gold-500/35 shadow-2xl bg-eclat-950">
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  className="object-cover group-hover:scale-108 transition-transform duration-700"
                   sizes="(max-width: 640px) 100vw, 320px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/70 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/80 via-transparent to-transparent pointer-events-none" />
+                
+                {/* Micro Signature Badge */}
+                <span className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[9px] uppercase font-semibold tracking-wider bg-black/60 border border-gold-400/50 text-gold-300 backdrop-blur-md">
+                  Signature
+                </span>
               </div>
 
               {/* Title & Price */}
-              <div className="text-center space-y-1">
+              <div className="text-center space-y-1.5">
                 <h3 className="text-base sm:text-lg font-serif text-white group-hover:text-gold-200 transition-colors">
                   {product.name}
                 </h3>
                 <p className="text-sm font-serif text-gold-300 font-medium">
                   ₹{product.price}
                 </p>
+                <div className="pt-1 flex items-center justify-center gap-1 text-[11px] text-gold-400/80 group-hover:text-gold-200 transition-colors">
+                  <span>Explore Creation</span>
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </div>
               </div>
             </Link>
           ))}
