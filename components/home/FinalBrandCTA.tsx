@@ -27,7 +27,7 @@ export default function FinalBrandCTA() {
           </h2>
 
           <p className="text-xs sm:text-sm text-champagne/85 font-light max-w-lg mx-auto leading-relaxed">
-            Visit our dessert boutique in New Town, Kolkata and discover an unforgettable world of artisanal confectionery and Parisian elegance.
+            Visit our dessert boutique at New Town, Biswa Bangla and discover an unforgettable world of artisanal confectionery and Parisian elegance.
           </p>
 
           <div className="pt-4">

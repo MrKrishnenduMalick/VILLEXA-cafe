@@ -136,7 +136,7 @@ export default function ContactPreview() {
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="+91 98765 43210"
+                      placeholder="9999-999-999"
                       className="w-full bg-eclat-950/80 border border-gold-400/30 rounded-xl px-4 py-2.5 text-sm text-white placeholder-champagne/30 focus:outline-none focus:border-gold-400"
                     />
                   </div>

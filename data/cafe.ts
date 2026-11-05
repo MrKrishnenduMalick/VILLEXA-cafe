@@ -40,10 +40,10 @@ export const CAFE_HIGHLIGHTS: CafeHighlight[] = [
 export const CAFE_DETAILS = {
   name: 'Maison Éclat Artisan Dessert Café',
   tagline: 'Where Dessert Becomes an Experience',
-  location: 'Plot IIE/12, Action Area II, New Town, Kolkata 700156',
-  landmark: 'Adjacent to Eco Park Gate 4, New Town',
-  phone: '+91 98765 43210',
-  alternatePhone: '+91 98765 43211',
+  location: 'New Town, Biswa Bangla',
+  landmark: 'Biswa Bangla, New Town',
+  phone: '9999-999-999',
+  alternatePhone: '9999-999-999',
   email: 'hello@maisoneclat.in',
   reservationEmail: 'concierge@maisoneclat.in',
   timings: [

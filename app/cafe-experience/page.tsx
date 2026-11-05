@@ -24,7 +24,7 @@ export default function CafeExperiencePage() {
             The Café Experience
           </h1>
           <p className="text-sm sm:text-base text-champagne/85 font-light leading-relaxed">
-            Dine, Relax, Indulge. Step into an opulent jewel box in New Town, Kolkata — where velvet burgundy banquettes, warm crystal chandeliers, and the aroma of roasted single-origin cacao envelop you.
+            Dine, Relax, Indulge. Step into an opulent jewel box in New Town, Biswa Bangla — where velvet burgundy banquettes, warm crystal chandeliers, and the aroma of roasted single-origin cacao envelop you.
           </p>
           <div className="pt-2">
             <button

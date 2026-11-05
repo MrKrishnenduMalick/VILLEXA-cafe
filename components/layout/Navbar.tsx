@@ -197,7 +197,7 @@ export default function Navbar() {
                     <ArrowRight className="w-4 h-4" />
                   </button>
                   <p className="text-center text-[11px] text-champagne/60 tracking-wider">
-                    {CAFE_DETAILS.location.split(',').slice(-2).join(',').trim()} • {CAFE_DETAILS.phone}
+                    {CAFE_DETAILS.location} • {CAFE_DETAILS.phone}
                   </p>
                 </div>
               </div>

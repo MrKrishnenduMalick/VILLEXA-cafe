@@ -38,7 +38,7 @@ export default function CafeExperiencePreview() {
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-wider text-gold-300 font-medium">Boutique Pâtisserie</p>
-              <p className="text-xs sm:text-sm font-serif text-white font-medium">New Town, Kolkata</p>
+              <p className="text-xs sm:text-sm font-serif text-white font-medium">New Town, Biswa Bangla</p>
             </div>
           </div>
         </div>

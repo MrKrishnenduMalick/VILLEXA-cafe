@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="space-y-4">
             <Logo size="md" />
             <p className="text-xs sm:text-sm text-champagne/70 leading-relaxed pt-2">
-              Where dessert becomes an unforgettable experience. Handcrafted haute pâtisserie, single-origin Ecuadorian chocolates, and freshly laminated bakes in the heart of New Town, Kolkata.
+              Where dessert becomes an unforgettable experience. Handcrafted haute pâtisserie, single-origin Ecuadorian chocolates, and freshly laminated bakes in the heart of New Town, Biswa Bangla.
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a

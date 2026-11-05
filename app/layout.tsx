@@ -6,7 +6,7 @@ import ClientProviders from '@/components/providers/ClientProviders';
 
 export const metadata: Metadata = {
   title: 'Maison Éclat | Artisan Dessert Café',
-  description: 'Handcrafted desserts, single origin chocolates and artisan bakes in New Town, Kolkata. Where dessert becomes an unforgettable experience.',
+  description: 'Handcrafted desserts, single origin chocolates and artisan bakes in New Town, Biswa Bangla. Where dessert becomes an unforgettable experience.',
   keywords: ['Maison Éclat', 'Artisan Dessert Café', 'Luxury Pâtisserie Kolkata', 'The Cherry Dessert', 'Celebration Cakes', 'Ecuador Single Origin Chocolate'],
   authors: [{ name: 'Maison Éclat' }],
 };
