@@ -315,3 +315,4 @@ export default function MenuCarousel3D({
     </div>
   );
 }
+

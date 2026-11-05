@@ -62,3 +62,4 @@ export default function CategoryBar({ activeCategory, onSelectCategory }: Catego
     </div>
   );
 }
+

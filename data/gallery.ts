@@ -80,3 +80,4 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?q=80&w=1000&auto=format&fit=crop',
   },
 ];
+

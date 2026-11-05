@@ -533,3 +533,4 @@ export const PRODUCTS: Product[] = [
     tags: ['French Haute Pâtisserie'],
   },
 ];
+
