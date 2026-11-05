@@ -25,8 +25,6 @@ export default function Hero() {
   const rotateY = useTransform(smoothX, [-0.5, 0.5], [-10, 10]);
   const platterTranslateX = useTransform(smoothX, [-0.5, 0.5], [-16, 16]);
   const platterTranslateY = useTransform(smoothY, [-0.5, 0.5], [-12, 12]);
-  const orbitTranslateX = useTransform(smoothX, [-0.5, 0.5], [22, -22]);
-  const orbitTranslateY = useTransform(smoothY, [-0.5, 0.5], [16, -16]);
   const glowTranslateX = useTransform(smoothX, [-0.5, 0.5], [30, -30]);
   const cardsTranslateY = useTransform(smoothY, [-0.5, 0.5], [-6, 6]);
 
@@ -136,21 +134,14 @@ export default function Hero() {
           <div className="absolute bottom-0 inset-x-0 h-56 bg-gradient-to-t from-[#080205] via-black/80 to-transparent" />
 
           {/* Luxury Pink Floral Branch Framing Accent */}
-          <div className="absolute top-0 left-0 w-80 sm:w-[420px] h-80 sm:h-[420px] opacity-75">
-            <svg viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-              <path d="M-20 20C40 60 130 80 190 45C235 25 280 85 305 130" stroke="url(#heroFloralGold)" strokeWidth="1.5" strokeDasharray="3 3"/>
-              <circle cx="60" cy="40" r="18" fill="rgba(215, 60, 130, 0.55)" filter="blur(1px)" />
-              <circle cx="135" cy="50" r="24" fill="rgba(223, 166, 42, 0.45)" filter="blur(1px)" />
-              <circle cx="195" cy="30" r="16" fill="rgba(215, 60, 130, 0.6)" />
-              <circle cx="250" cy="95" r="20" fill="rgba(223, 166, 42, 0.5)" />
-              <circle cx="290" cy="140" r="14" fill="rgba(215, 60, 130, 0.55)" />
-              <defs>
-                <linearGradient id="heroFloralGold" x1="0" y1="0" x2="350" y2="350" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#dfa62a" />
-                  <stop offset="1" stopColor="#e84393" />
-                </linearGradient>
-              </defs>
-            </svg>
+          <div className="absolute top-0 left-0 w-36 sm:w-48 h-64 sm:h-80 pointer-events-none z-10 opacity-90">
+            <Image
+              src="/images/hero-floral-left.png"
+              alt="Maison Éclat Floral Decor"
+              fill
+              className="object-contain object-top-left"
+              sizes="(max-width: 768px) 144px, 192px"
+            />
           </div>
         </div>
 
@@ -162,7 +153,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="lg:col-span-6 space-y-4 sm:space-y-6 text-center lg:text-left z-20"
+              className="lg:col-span-5 xl:col-span-5 space-y-4 sm:space-y-6 text-center lg:text-left z-20"
             >
               {/* Tagline with Gold Filigree */}
               <div className="flex items-center justify-center lg:justify-start gap-2 text-gold-400 text-[10px] sm:text-xs uppercase tracking-[0.32em] font-medium">
@@ -221,7 +212,7 @@ export default function Hero() {
             </motion.div>
 
             {/* Right Column: High-Impact 3D Futuristic Centerpiece Platter with Orbital Holographic Glass Ribbon */}
-            <div className="lg:col-span-6 relative flex items-center justify-center py-6">
+            <div className="lg:col-span-7 xl:col-span-7 relative flex items-center justify-center lg:justify-end py-2 sm:py-6">
               <motion.div
                 style={{
                   perspective: 1200,
@@ -229,102 +220,34 @@ export default function Hero() {
                   rotateY,
                   transformStyle: 'preserve-3d',
                 }}
-                className="relative w-full max-w-[520px] sm:max-w-[580px] aspect-[16/13] flex items-center justify-center"
+                className="relative w-full max-w-[580px] sm:max-w-[660px] lg:max-w-[720px] flex items-center justify-center"
               >
-                {/* Layer 1: Ambient Neon Gold & Magenta Floor Halo Ring */}
+                {/* Layer 1: Ambient Neon Gold & Magenta Floor Halo Glow */}
                 <motion.div
                   style={{ x: glowTranslateX }}
-                  className="absolute bottom-2 w-[400px] sm:w-[480px] h-[120px] sm:h-[150px] rounded-[100%] bg-gradient-to-tr from-gold-500/40 via-amber-400/30 to-rose-500/20 blur-3xl pointer-events-none"
+                  className="absolute bottom-2 sm:bottom-6 right-1/4 w-[380px] sm:w-[520px] h-[130px] sm:h-[170px] rounded-[100%] bg-gradient-to-tr from-gold-500/35 via-amber-400/25 to-rose-500/20 blur-3xl pointer-events-none"
                 />
 
-                {/* Layer 2: Futuristic Floating Gilded Pedestal Platform */}
+                {/* Layer 2: 3D Floating Presentation Platter, Cherry Dome & Glass Ribbon */}
                 <motion.div
                   style={{
                     x: platterTranslateX,
                     y: platterTranslateY,
                     transformStyle: 'preserve-3d',
                   }}
-                  className="relative w-full h-full flex items-center justify-center"
+                  className="relative w-full aspect-[649/371] drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)] animate-float-smooth"
                 >
-                  {/* Floating Circular Luxury Platter with Neon Edge Glow */}
-                  <div className="relative w-[340px] sm:w-[430px] aspect-[16/11] rounded-[52px] bg-gradient-to-b from-[#2e0820] via-[#1c0414] to-[#0a0208] p-3 sm:p-3.5 border-2 border-gold-400/75 shadow-[0_35px_80px_rgba(0,0,0,0.95),0_0_55px_rgba(223,166,42,0.45),inset_0_0_35px_rgba(223,166,42,0.2)] overflow-hidden">
-                    {/* Top Specular Rim Reflection */}
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-gold-200 to-transparent pointer-events-none" />
+                  <Image
+                    src="/images/hero-3d-centerpiece.webp"
+                    alt="Maison Éclat — 3D Floating Masterpiece Platter with The Cherry Dome and Glass Ribbon"
+                    fill
+                    priority
+                    className="object-contain object-center scale-105 select-none"
+                    sizes="(max-width: 1024px) 100vw, 720px"
+                  />
 
-                    {/* High-Resolution Centerpiece Masterpiece Photo */}
-                    <div className="relative w-full h-full rounded-[40px] overflow-hidden bg-eclat-950">
-                      <Image
-                        src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1200&auto=format&fit=crop"
-                        alt="The Cherry Dome — Maison Éclat 3D Masterpiece"
-                        fill
-                        priority
-                        className="object-cover object-center transition-transform duration-1000 hover:scale-105"
-                        sizes="(max-width: 1024px) 100vw, 580px"
-                      />
-                      {/* Atmospheric edge shadow */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/35 pointer-events-none" />
-                    </div>
-
-                    {/* Golden Beveled Inner Ring */}
-                    <div className="absolute inset-0 rounded-[52px] border border-gold-300/40 pointer-events-none" />
-                  </div>
-
-                  {/* Layer 3: 3D Floating Glass Pod 1 (Raspberry Sablé Tart) */}
-                  <motion.div
-                    style={{
-                      x: orbitTranslateX,
-                      y: orbitTranslateY,
-                      translateZ: 70,
-                    }}
-                    className="absolute -top-3 sm:-top-5 -left-3 sm:-left-6 p-2 rounded-2xl bg-black/65 border border-gold-400/60 backdrop-blur-2xl shadow-[0_20px_45px_rgba(0,0,0,0.8),0_0_25px_rgba(223,166,42,0.35)] flex items-center gap-2.5 z-30 pointer-events-auto hover:scale-105 transition-transform"
-                  >
-                    <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-gold-400/40 shrink-0">
-                      <Image
-                        src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?q=80&w=300&auto=format&fit=crop"
-                        alt="Raspberry Sablé Preview"
-                        fill
-                        className="object-cover"
-                        sizes="48px"
-                      />
-                    </div>
-                    <div className="pr-1.5">
-                      <p className="text-[10px] uppercase tracking-wider text-gold-300 font-medium">Ruby Sablé</p>
-                      <p className="text-xs font-serif text-white font-semibold">₹256</p>
-                    </div>
-                  </motion.div>
-
-                  {/* Layer 4: 3D Floating Glass Pod 2 (Dark Opera Gateau) */}
-                  <motion.div
-                    style={{
-                      x: platterTranslateX,
-                      translateZ: 85,
-                    }}
-                    className="absolute -top-6 sm:-top-8 right-6 sm:right-10 p-2 rounded-2xl bg-black/70 border border-gold-400/60 backdrop-blur-2xl shadow-[0_20px_45px_rgba(0,0,0,0.8),0_0_25px_rgba(223,166,42,0.35)] flex items-center gap-2.5 z-30 pointer-events-auto hover:scale-105 transition-transform"
-                  >
-                    <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-gold-400/40 shrink-0">
-                      <Image
-                        src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=300&auto=format&fit=crop"
-                        alt="Dark Opera Tart Preview"
-                        fill
-                        className="object-cover"
-                        sizes="48px"
-                      />
-                    </div>
-                    <div className="pr-1.5">
-                      <p className="text-[10px] uppercase tracking-wider text-gold-300 font-medium">Dark Tart</p>
-                      <p className="text-xs font-serif text-white font-semibold">₹280</p>
-                    </div>
-                  </motion.div>
-
-                  {/* Layer 5: French Macaron Tasting Badge */}
-                  <motion.div
-                    style={{ translateZ: 60 }}
-                    className="absolute -bottom-3 sm:-bottom-4 right-2 sm:right-6 px-4 py-2 rounded-full bg-gradient-to-r from-rose-950/95 via-black/90 to-rose-950/95 border border-rose-400/50 text-gold-200 text-xs font-serif backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.8),0_0_25px_rgba(223,166,42,0.3)] flex items-center gap-2.5 z-30"
-                  >
-                    <span className="w-2.5 h-2.5 rounded-full bg-rose-400 animate-ping" />
-                    <span>The Cherry Signature Dome • ₹280</span>
-                  </motion.div>
+                  {/* Specular Edge Highlights */}
+                  <div className="absolute inset-0 bg-radial-glow opacity-60 pointer-events-none mix-blend-screen" />
                 </motion.div>
               </motion.div>
             </div>
