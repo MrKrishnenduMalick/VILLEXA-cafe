@@ -235,15 +235,16 @@ export default function Hero() {
                     y: platterTranslateY,
                     transformStyle: 'preserve-3d',
                   }}
-                  className="relative w-full aspect-[649/371] drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)] animate-float-smooth"
+                  className="relative w-full aspect-[1465/927] drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)] animate-float-smooth"
                 >
                   <Image
                     src="/images/hero-3d-centerpiece.webp"
                     alt="Maison Éclat — 3D Floating Masterpiece Platter with The Cherry Dome and Glass Ribbon"
                     fill
                     priority
+                    quality={100}
                     className="object-contain object-center scale-105 select-none"
-                    sizes="(max-width: 1024px) 100vw, 720px"
+                    sizes="(max-width: 1024px) 100vw, 760px"
                   />
 
                   {/* Specular Edge Highlights */}

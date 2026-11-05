@@ -19,7 +19,7 @@ export const CUSTOM_CAKES: CustomCakeTier[] = [
     startingPrice: 12500,
     leadTime: '14 days notice required',
     servings: '50 – 200 Guests',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?q=80&w=1000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?q=80&w=1000&auto=format&fit=crop',
     flavours: ['Madagascar Vanilla & Raspberry Compote', 'Belgian Dark Truffle & Salted Caramel', 'Sicilian Pistachio & Rose Water'],
   },
   {

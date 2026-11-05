@@ -67,7 +67,7 @@ export default function CustomCakesPreview() {
           <div className="relative aspect-[16/11] sm:aspect-[16/10] rounded-[36px] overflow-hidden glass-futuristic p-2 sm:p-3 shadow-2xl">
             <div className="relative w-full h-full rounded-[28px] overflow-hidden bg-eclat-950">
               <Image
-                src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?q=80&w=1200&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?q=80&w=1200&auto=format&fit=crop"
                 alt="Maison Éclat Bespoke Celebration Cake"
                 fill
                 className="object-cover transition-transform duration-1000 group-hover:scale-105"

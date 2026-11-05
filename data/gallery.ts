@@ -23,7 +23,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
     id: 'g-3',
     title: '3-Tier Golden Botanical Celebration Cake',
     category: 'Cakes',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?q=80&w=1000&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?q=80&w=1000&auto=format&fit=crop',
   },
   {
     id: 'g-4',
