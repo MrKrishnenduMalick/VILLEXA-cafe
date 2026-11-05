@@ -235,7 +235,7 @@ export default function Hero() {
                     y: platterTranslateY,
                     transformStyle: 'preserve-3d',
                   }}
-                  className="relative w-full aspect-[1465/927] drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)] animate-float-smooth"
+                  className="relative w-full aspect-[1024/682] drop-shadow-[0_30px_70px_rgba(0,0,0,0.95)] animate-float-smooth"
                 >
                   <Image
                     src="/images/hero-3d-centerpiece.webp"
