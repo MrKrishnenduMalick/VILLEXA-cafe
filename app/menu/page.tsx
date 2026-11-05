@@ -27,34 +27,34 @@ export default function MenuPage() {
   const currentCategoryObj = CATEGORIES.find((c) => c.id === activeCategory);
 
   return (
-    <div className="min-h-screen pt-28 sm:pt-36 pb-24 bg-ambient-vignette overflow-hidden">
+    <div className="min-h-screen pt-20 sm:pt-22 pb-16 bg-ambient-vignette overflow-hidden">
       {/* Background ambient lighting */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-4/5 h-96 bg-gold-500/10 blur-[140px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
-        {/* 1. Menu Heading and Introduction (Matching Reference Image 2) */}
-        <div className="text-center max-w-2xl mx-auto space-y-2.5">
-          <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.28em] text-gold-400 font-medium">
-            <Sparkles className="w-3.5 h-3.5" /> Our Menu
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 1. Menu Heading and Introduction (Matching Reference Image 2 - Compact luxury hierarchy) */}
+        <div className="text-center max-w-2xl mx-auto space-y-1 mb-3 sm:mb-4">
+          <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-gold-400 font-medium">
+            <Sparkles className="w-3 h-3 text-gold-400" /> Our Menu
           </span>
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif text-white tracking-tight">
             Explore Our Creations
           </h1>
-          <p className="text-xs sm:text-sm text-champagne/80 font-light leading-relaxed max-w-xl mx-auto">
+          <p className="text-[11px] sm:text-xs text-champagne/80 font-light leading-relaxed max-w-lg mx-auto">
             A curated selection of desserts, chocolates, pastries and cakes crafted with the finest ingredients.
           </p>
         </div>
 
-        {/* 2. Category Navigation (Placed SEPARATELY ABOVE the 3D Carousel) */}
-        <div className="relative z-30">
+        {/* 2. Category Navigation (Directly above carousel, no huge gap) */}
+        <div className="relative z-30 mb-2 sm:mb-3">
           <CategoryBar
             activeCategory={activeCategory}
             onSelectCategory={(catId) => setActiveCategory(catId)}
           />
         </div>
 
-        {/* 3. Main 3D Perspective Product Carousel */}
-        <div className="relative z-20 py-2 sm:py-6">
+        {/* 3. Main 3D Perspective Product Carousel (Directly beneath category navigation, fully visible in initial viewport) */}
+        <div className="relative z-20">
           <MenuCarousel3D
             products={categoryProducts}
             onSelectProduct={(product) => setSelectedProduct(product)}
@@ -64,7 +64,7 @@ export default function MenuPage() {
         </div>
 
         {/* 4. Secondary Product Collection */}
-        <div className="relative z-20 pt-4">
+        <div className="relative z-20 pt-8 sm:pt-10">
           <SecondaryProductSlider
             products={categoryProducts}
             categoryTitle={currentCategoryObj?.name || 'Creations'}

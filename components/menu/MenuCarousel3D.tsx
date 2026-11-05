@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Product } from '@/data/products';
-import { ChevronLeft, ChevronRight, Heart, MoreHorizontal, Sparkles, Check, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, MoreHorizontal, Sparkles } from 'lucide-react';
 
 interface MenuCarousel3DProps {
   products: Product[];
@@ -21,7 +21,6 @@ export default function MenuCarousel3D({
   const [activeIndex, setActiveIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [addedItem, setAddedItem] = useState<string | null>(null);
 
   const startXRef = useRef<number>(0);
   const currentDragRef = useRef<number>(0);
@@ -60,7 +59,7 @@ export default function MenuCarousel3D({
       hasDraggedRef.current = true;
     }
     // Dampen drag offset for realistic tactile resistance
-    setDragOffset(diff * 0.4);
+    setDragOffset(diff * 0.45);
   };
 
   const handleMouseUp = () => {
@@ -69,9 +68,9 @@ export default function MenuCarousel3D({
     const finalDiff = currentDragRef.current;
     setDragOffset(0);
 
-    if (finalDiff > 40) {
+    if (finalDiff > 35) {
       handlePrev();
-    } else if (finalDiff < -40) {
+    } else if (finalDiff < -35) {
       handleNext();
     }
   };
@@ -97,7 +96,7 @@ export default function MenuCarousel3D({
     if (Math.abs(diff) > 8) {
       hasDraggedRef.current = true;
     }
-    setDragOffset(diff * 0.4);
+    setDragOffset(diff * 0.45);
   };
 
   const handleTouchEnd = () => {
@@ -106,15 +105,15 @@ export default function MenuCarousel3D({
     const finalDiff = currentDragRef.current;
     setDragOffset(0);
 
-    if (finalDiff > 35) {
+    if (finalDiff > 30) {
       handlePrev();
-    } else if (finalDiff < -35) {
+    } else if (finalDiff < -30) {
       handleNext();
     }
   };
 
   const handleCardClick = (index: number, e: React.MouseEvent) => {
-    // If a real drag occurred, suppress click to prevent accidental activation
+    // Suppress accidental click if user was dragging
     if (hasDraggedRef.current) {
       e.preventDefault();
       e.stopPropagation();
@@ -126,17 +125,11 @@ export default function MenuCarousel3D({
     }
   };
 
-  const handleOrderAdd = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    setAddedItem(id);
-    setTimeout(() => setAddedItem(null), 2200);
-  };
-
   return (
-    <div className="relative w-full max-w-7xl mx-auto py-4 sm:py-8 select-none">
-      {/* 3D Perspective Stage */}
+    <div className="relative w-full max-w-7xl mx-auto py-1 select-none">
+      {/* 3D Perspective Stage: Reduced height and zero extra margin to fit in initial viewport */}
       <div
-        className="carousel-stage-3d relative h-[470px] sm:h-[520px] md:h-[570px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-visible"
+        className="carousel-stage-3d relative h-[400px] sm:h-[430px] md:h-[450px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-visible"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -154,7 +147,7 @@ export default function MenuCarousel3D({
           const isCenter = diff === 0;
           const isFavorited = favorites.includes(item.id);
 
-          // Calculate 3D transforms based on offset
+          // Calculate 3D transforms based on curved perspective arc
           let translateX = '0%';
           let translateZ = '60px';
           let rotateY = '0deg';
@@ -163,62 +156,61 @@ export default function MenuCarousel3D({
           let zIndex = 40;
           let visibility: 'visible' | 'hidden' = 'visible';
 
-          // Base positions for curved 3D arrangement
           if (diff === 0) {
             translateX = `${dragOffset}px`;
             translateZ = '60px';
-            rotateY = `${dragOffset * 0.05}deg`;
+            rotateY = `${dragOffset * 0.04}deg`;
             scale = 1.04;
             opacity = 1;
             zIndex = 40;
           } else if (diff === -1) {
-            translateX = `calc(-62% + ${dragOffset * 0.8}px)`;
-            translateZ = '-40px';
-            rotateY = '18deg';
-            scale = 0.86;
-            opacity = 0.85;
+            translateX = `calc(-58% + ${dragOffset * 0.8}px)`;
+            translateZ = '-35px';
+            rotateY = '16deg';
+            scale = 0.88;
+            opacity = 0.88;
             zIndex = 30;
           } else if (diff === 1) {
-            translateX = `calc(62% + ${dragOffset * 0.8}px)`;
-            translateZ = '-40px';
-            rotateY = '-18deg';
-            scale = 0.86;
-            opacity = 0.85;
+            translateX = `calc(58% + ${dragOffset * 0.8}px)`;
+            translateZ = '-35px';
+            rotateY = '-16deg';
+            scale = 0.88;
+            opacity = 0.88;
             zIndex = 30;
           } else if (diff === -2) {
-            translateX = `calc(-114% + ${dragOffset * 0.6}px)`;
-            translateZ = '-110px';
-            rotateY = '26deg';
-            scale = 0.74;
-            opacity = 0.62;
+            translateX = `calc(-108% + ${dragOffset * 0.6}px)`;
+            translateZ = '-95px';
+            rotateY = '24deg';
+            scale = 0.76;
+            opacity = 0.65;
             zIndex = 20;
           } else if (diff === 2) {
-            translateX = `calc(114% + ${dragOffset * 0.6}px)`;
-            translateZ = '-110px';
-            rotateY = '-26deg';
-            scale = 0.74;
-            opacity = 0.62;
+            translateX = `calc(108% + ${dragOffset * 0.6}px)`;
+            translateZ = '-95px';
+            rotateY = '-24deg';
+            scale = 0.76;
+            opacity = 0.65;
             zIndex = 20;
           } else if (diff === -3) {
-            translateX = `calc(-158% + ${dragOffset * 0.4}px)`;
-            translateZ = '-180px';
-            rotateY = '34deg';
-            scale = 0.64;
-            opacity = 0.35;
+            translateX = `calc(-150% + ${dragOffset * 0.4}px)`;
+            translateZ = '-150px';
+            rotateY = '30deg';
+            scale = 0.66;
+            opacity = 0.40;
             zIndex = 10;
           } else if (diff === 3) {
-            translateX = `calc(158% + ${dragOffset * 0.4}px)`;
-            translateZ = '-180px';
-            rotateY = '-34deg';
-            scale = 0.64;
-            opacity = 0.35;
+            translateX = `calc(150% + ${dragOffset * 0.4}px)`;
+            translateZ = '-150px';
+            rotateY = '-30deg';
+            scale = 0.66;
+            opacity = 0.40;
             zIndex = 10;
           } else {
-            // Cards further away are hidden from view
+            // Hidden from viewport
             visibility = 'hidden';
             opacity = 0;
             zIndex = 1;
-            translateX = diff < 0 ? '-200%' : '200%';
+            translateX = diff < 0 ? '-190%' : '190%';
           }
 
           return (
@@ -230,32 +222,32 @@ export default function MenuCarousel3D({
                 opacity,
                 zIndex,
                 visibility,
-                transition: isDragging ? 'none' : 'all 0.6s cubic-bezier(0.2, 0.8, 0.25, 1)',
+                transition: isDragging ? 'none' : 'all 0.55s cubic-bezier(0.2, 0.8, 0.25, 1)',
               }}
-              className={`absolute top-1/2 -translate-y-1/2 w-[280px] sm:w-[350px] md:w-[400px] rounded-3xl transition-shadow ${
+              className={`absolute top-1/2 -translate-y-1/2 w-[270px] sm:w-[310px] md:w-[345px] rounded-3xl transition-shadow ${
                 isCenter
                   ? 'center-card-glow cursor-default'
                   : 'glass-gold-card hover:opacity-95 cursor-pointer'
               }`}
             >
-              <div className="relative p-5 sm:p-6 flex flex-col justify-between h-[420px] sm:h-[470px] md:h-[500px]">
+              <div className="relative p-4 sm:p-5 flex flex-col justify-between h-[370px] sm:h-[400px] md:h-[420px]">
                 {/* Top Controls on Center Card */}
                 <div className="flex items-center justify-between z-10">
                   {item.isSignature ? (
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] uppercase font-semibold tracking-wider bg-gold-500/25 border border-gold-400/50 text-gold-300 backdrop-blur-sm">
+                    <span className="px-2.5 py-0.5 rounded-full text-[9px] uppercase font-semibold tracking-wider bg-gold-500/25 border border-gold-400/50 text-gold-300 backdrop-blur-sm">
                       Signature
                     </span>
                   ) : (
                     <div />
                   )}
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onToggleFavorite(item.id);
                       }}
-                      className="w-8 h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:border-gold-300 transition-all duration-200"
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:border-gold-300 transition-all duration-200"
                       aria-label="Add to favourites"
                     >
                       <Heart
@@ -270,7 +262,7 @@ export default function MenuCarousel3D({
                         e.stopPropagation();
                         onSelectProduct(item);
                       }}
-                      className="w-8 h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:border-gold-300 transition-all duration-200"
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:border-gold-300 transition-all duration-200"
                       aria-label="View product details"
                     >
                       <MoreHorizontal className="w-3.5 h-3.5" />
@@ -278,7 +270,7 @@ export default function MenuCarousel3D({
                   </div>
                 </div>
 
-                {/* Central Card Internal Arrow Buttons (matching Reference Image 2) */}
+                {/* Central Card Internal Arrow Buttons (Vertically Aligned with Carousel) */}
                 {isCenter && (
                   <>
                     <button
@@ -287,9 +279,9 @@ export default function MenuCarousel3D({
                         handlePrev();
                       }}
                       aria-label="Previous product"
-                      className="absolute left-2.5 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/70 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
                     >
-                      <ChevronLeft className="w-5 h-5" />
+                      <ChevronLeft className="w-4 h-4" />
                     </button>
 
                     <button
@@ -298,18 +290,18 @@ export default function MenuCarousel3D({
                         handleNext();
                       }}
                       aria-label="Next product"
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 z-30 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/70 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
                     >
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-4 h-4" />
                     </button>
                   </>
                 )}
 
                 {/* Center Dessert Photograph */}
-                <div className="relative w-full h-[180px] sm:h-[220px] md:h-[240px] my-auto flex items-center justify-center">
+                <div className="relative w-full h-[155px] sm:h-[180px] md:h-[195px] my-auto flex items-center justify-center">
                   {/* Subtle warm amber halo behind center dessert */}
                   {isCenter && (
-                    <div className="absolute w-48 h-48 rounded-full bg-gold-500/20 blur-3xl pointer-events-none animate-pulse-slow" />
+                    <div className="absolute w-40 h-40 rounded-full bg-gold-500/20 blur-2xl pointer-events-none animate-pulse-slow" />
                   )}
 
                   <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-eclat-950/70">
@@ -318,46 +310,46 @@ export default function MenuCarousel3D({
                       alt={item.name}
                       fill
                       className="object-cover transition-transform duration-700 hover:scale-105"
-                      sizes="(max-width: 640px) 280px, (max-width: 768px) 350px, 400px"
+                      sizes="(max-width: 640px) 270px, (max-width: 768px) 310px, 345px"
                       priority={isCenter}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/75 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/70 via-transparent to-transparent pointer-events-none" />
                   </div>
                 </div>
 
                 {/* Product Name, Price & Description */}
-                <div className="mt-auto space-y-2 z-10">
+                <div className="mt-auto space-y-1.5 z-10">
                   <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="text-lg sm:text-xl md:text-2xl font-serif text-white truncate">
+                    <h3 className="text-base sm:text-lg md:text-xl font-serif text-white truncate">
                       {item.name}
                     </h3>
-                    <span className="text-lg sm:text-xl md:text-2xl font-serif text-gold-300 font-medium shrink-0">
+                    <span className="text-base sm:text-lg md:text-xl font-serif text-gold-300 font-medium shrink-0">
                       ₹{item.price}
                     </span>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-champagne/80 line-clamp-2 leading-relaxed font-light">
+                  <p className="text-[11px] sm:text-xs text-champagne/80 line-clamp-2 leading-relaxed font-light">
                     {item.description}
                   </p>
 
                   {/* Center Card Action Button */}
                   {isCenter ? (
-                    <div className="pt-2">
+                    <div className="pt-1.5">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           onToggleFavorite(item.id);
                         }}
-                        className="w-full btn-gold py-2.5 rounded-full text-xs font-semibold uppercase tracking-[0.18em] flex items-center justify-center gap-2"
+                        className="w-full btn-gold py-2 rounded-full text-xs font-semibold uppercase tracking-[0.16em] flex items-center justify-center gap-1.5 shadow-md"
                       >
                         <Heart className={`w-3.5 h-3.5 ${isFavorited ? 'fill-current' : ''}`} />
                         <span>{isFavorited ? 'In Favourites' : 'Add to Favourites'}</span>
                       </button>
                     </div>
                   ) : (
-                    <div className="pt-1 text-center">
-                      <span className="text-[11px] text-gold-400/80 group-hover:text-gold-200 transition-colors uppercase tracking-wider">
-                        Click to View
+                    <div className="pt-0.5 text-center">
+                      <span className="text-[10px] text-gold-400/80 group-hover:text-gold-200 transition-colors uppercase tracking-wider font-medium">
+                        Click to Select
                       </span>
                     </div>
                   )}
@@ -371,22 +363,22 @@ export default function MenuCarousel3D({
         <button
           onClick={handlePrev}
           aria-label="Previous dessert"
-          className="absolute left-1 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-110 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
+          className="absolute left-1 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5" />
         </button>
 
         <button
           onClick={handleNext}
           aria-label="Next dessert"
-          className="absolute right-1 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-110 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
+          className="absolute right-1 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-5 h-5" />
         </button>
       </div>
 
       {/* Pagination Indicator Dots */}
-      <div className="flex items-center justify-center gap-2 mt-4 sm:mt-6">
+      <div className="flex items-center justify-center gap-1.5 mt-2 sm:mt-3">
         {products.map((p, idx) => {
           const isActive = idx === activeIndex;
           return (
@@ -396,8 +388,8 @@ export default function MenuCarousel3D({
               aria-label={`Slide to ${p.name}`}
               className={`transition-all duration-300 rounded-full ${
                 isActive
-                  ? 'w-7 h-2 bg-gradient-to-r from-gold-400 to-gold-500 shadow-[0_0_10px_rgba(223,166,42,0.6)]'
-                  : 'w-2 h-2 bg-gold-400/30 hover:bg-gold-400/60'
+                  ? 'w-6 h-1.5 bg-gradient-to-r from-gold-400 to-gold-500 shadow-[0_0_8px_rgba(223,166,42,0.6)]'
+                  : 'w-1.5 h-1.5 bg-gold-400/30 hover:bg-gold-400/60'
               }`}
             />
           );
