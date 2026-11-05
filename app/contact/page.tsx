@@ -78,7 +78,8 @@ export default function ContactPage() {
             </div>
             <h3 className="text-lg font-serif text-white">Our Location</h3>
             <p className="text-xs text-champagne/75 leading-relaxed font-light">
-              Plot IIE/12, Action Area II, New Town, Kolkata 700156 (Near Eco Park Gate 4)
+              {CAFE_DETAILS.location}<br />
+              <span className="text-gold-400/80">({CAFE_DETAILS.landmark})</span>
             </p>
           </div>
 
@@ -88,8 +89,12 @@ export default function ContactPage() {
             </div>
             <h3 className="text-lg font-serif text-white">Telephone & WhatsApp</h3>
             <p className="text-xs text-champagne/75 leading-relaxed font-light">
-              +91 98765 43210<br />
-              +91 98765 43211
+              <a href={`tel:${CAFE_DETAILS.phone.replace(/\s+/g, '')}`} className="hover:text-gold-300 transition-colors">
+                {CAFE_DETAILS.phone}
+              </a><br />
+              <a href={`tel:${CAFE_DETAILS.alternatePhone.replace(/\s+/g, '')}`} className="hover:text-gold-300 transition-colors">
+                {CAFE_DETAILS.alternatePhone}
+              </a>
             </p>
           </div>
 
@@ -99,8 +104,12 @@ export default function ContactPage() {
             </div>
             <h3 className="text-lg font-serif text-white">Direct Email</h3>
             <p className="text-xs text-champagne/75 leading-relaxed font-light">
-              hello@maisoneclat.in<br />
-              concierge@maisoneclat.in
+              <a href={`mailto:${CAFE_DETAILS.email}`} className="hover:text-gold-300 transition-colors">
+                {CAFE_DETAILS.email}
+              </a><br />
+              <a href={`mailto:${CAFE_DETAILS.reservationEmail}`} className="hover:text-gold-300 transition-colors">
+                {CAFE_DETAILS.reservationEmail}
+              </a>
             </p>
           </div>
 

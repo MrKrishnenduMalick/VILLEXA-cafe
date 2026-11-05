@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Logo from '../ui/Logo';
 import { MapPin, Phone, Mail, Clock, Instagram, Facebook, Send, Sparkles } from 'lucide-react';
+import { CAFE_DETAILS } from '@/data/cafe';
 
 export default function Footer() {
   return (
@@ -108,11 +109,13 @@ export default function Footer() {
             <div className="pt-2 text-xs text-champagne/70 space-y-1.5">
               <p className="flex items-start gap-2">
                 <MapPin className="w-3.5 h-3.5 text-gold-400 shrink-0 mt-0.5" />
-                <span>Action Area II, New Town, Kolkata 700156</span>
+                <span>{CAFE_DETAILS.location}</span>
               </p>
               <p className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-gold-400 shrink-0" />
-                <span>+91 98765 43210</span>
+                <a href={`tel:${CAFE_DETAILS.phone.replace(/\s+/g, '')}`} className="hover:text-gold-300 transition-colors">
+                  {CAFE_DETAILS.phone}
+                </a>
               </p>
             </div>
           </div>

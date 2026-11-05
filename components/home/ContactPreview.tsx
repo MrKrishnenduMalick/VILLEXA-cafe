@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { MapPin, Phone, Mail, Clock, Send, Sparkles, CheckCircle2 } from 'lucide-react';
+import { CAFE_DETAILS } from '@/data/cafe';
 
 export default function ContactPreview() {
   const [submitted, setSubmitted] = useState(false);
@@ -39,15 +40,17 @@ export default function ContactPreview() {
             <div className="flex items-start gap-3 p-3 rounded-xl bg-eclat-900/60 border border-gold-500/20">
               <MapPin className="w-5 h-5 text-gold-400 shrink-0 mt-0.5" />
               <div>
-                <p className="font-medium text-white">New Town, Kolkata</p>
-                <p className="text-xs text-champagne/70 mt-0.5">Plot IIE/12, Action Area II, adjacent to Eco Park Gate 4</p>
+                <p className="font-medium text-white">{CAFE_DETAILS.location}</p>
+                <p className="text-xs text-champagne/70 mt-0.5">{CAFE_DETAILS.landmark}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3 p-3 rounded-xl bg-eclat-900/60 border border-gold-500/20">
               <Phone className="w-5 h-5 text-gold-400 shrink-0" />
               <div>
-                <p className="font-medium text-white">+91 98765 43210</p>
+                <a href={`tel:${CAFE_DETAILS.phone.replace(/\s+/g, '')}`} className="font-medium text-white hover:text-gold-300 transition-colors">
+                  {CAFE_DETAILS.phone}
+                </a>
                 <p className="text-[11px] text-champagne/60">Direct concierge & WhatsApp</p>
               </div>
             </div>
@@ -55,7 +58,9 @@ export default function ContactPreview() {
             <div className="flex items-center gap-3 p-3 rounded-xl bg-eclat-900/60 border border-gold-500/20">
               <Mail className="w-5 h-5 text-gold-400 shrink-0" />
               <div>
-                <p className="font-medium text-white">hello@maisoneclat.in</p>
+                <a href={`mailto:${CAFE_DETAILS.email}`} className="font-medium text-white hover:text-gold-300 transition-colors">
+                  {CAFE_DETAILS.email}
+                </a>
                 <p className="text-[11px] text-champagne/60">Inquiries answered within 2 hours</p>
               </div>
             </div>

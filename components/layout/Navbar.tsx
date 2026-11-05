@@ -8,6 +8,7 @@ import ReservationModal from './ReservationModal';
 import { Menu as MenuIcon, X, ArrowRight, Sparkles, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWishlist } from '@/context/WishlistContext';
+import { CAFE_DETAILS } from '@/data/cafe';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
@@ -196,7 +197,7 @@ export default function Navbar() {
                     <ArrowRight className="w-4 h-4" />
                   </button>
                   <p className="text-center text-[11px] text-champagne/60 tracking-wider">
-                    New Town, Kolkata • +91 98765 43210
+                    {CAFE_DETAILS.location.split(',').slice(-2).join(',').trim()} • {CAFE_DETAILS.phone}
                   </p>
                 </div>
               </div>
