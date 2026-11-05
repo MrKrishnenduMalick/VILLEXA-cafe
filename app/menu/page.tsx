@@ -2,8 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { CATEGORIES, PRODUCTS, Product } from '@/data/products';
-import MenuCarousel3D from '@/components/menu/MenuCarousel3D';
 import CategoryBar from '@/components/menu/CategoryBar';
+import MenuCarousel3D from '@/components/menu/MenuCarousel3D';
 import SecondaryProductSlider from '@/components/menu/SecondaryProductSlider';
 import ProductDetailModal from '@/components/menu/ProductDetailModal';
 import { Sparkles } from 'lucide-react';
@@ -11,7 +11,7 @@ import { Sparkles } from 'lucide-react';
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState<string>('tarts');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [favorites, setFavorites] = useState<string[]>(['the-cherry']);
+  const [favorites, setFavorites] = useState<string[]>(['the-cherry', 'dark-chocolate-tart']);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
@@ -24,69 +24,50 @@ export default function MenuPage() {
     return PRODUCTS.filter((p) => p.category === activeCategory);
   }, [activeCategory]);
 
-  // Featured products for the 3D carousel (maximum 3 to 5 featured products)
-  const carouselProducts = useMemo(() => {
-    // If category has signature products, prioritize them, capped at 3
-    const sigs = categoryProducts.filter((p) => p.isSignature);
-    const others = categoryProducts.filter((p) => !p.isSignature);
-    const combined = [...sigs, ...others];
-    return combined.slice(0, 3);
-  }, [categoryProducts]);
-
-  // All products of this category for the secondary slider
-  const sliderProducts = useMemo(() => {
-    // Return all items in this category or cross-category recommendations
-    if (categoryProducts.length >= 3) {
-      return categoryProducts;
-    }
-    // If few, supplement with favorites
-    return [...categoryProducts, ...PRODUCTS.filter((p) => p.isSignature)].slice(0, 6);
-  }, [categoryProducts]);
-
   const currentCategoryObj = CATEGORIES.find((c) => c.id === activeCategory);
 
   return (
     <div className="min-h-screen pt-28 sm:pt-36 pb-24 bg-ambient-vignette overflow-hidden">
       {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-4/5 h-96 bg-gold-500/10 blur-[130px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-4/5 h-96 bg-gold-500/10 blur-[140px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Page Header (Matching Reference Image 2) */}
-        <div className="text-center max-w-2xl mx-auto mb-4 space-y-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        {/* 1. Menu Heading and Introduction (Matching Reference Image 2) */}
+        <div className="text-center max-w-2xl mx-auto space-y-2.5">
           <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.28em] text-gold-400 font-medium">
             <Sparkles className="w-3.5 h-3.5" /> Our Menu
           </span>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif text-white tracking-tight">
             Explore Our Creations
           </h1>
-          <p className="text-xs sm:text-sm text-champagne/80 font-light leading-relaxed">
-            A curated selection of desserts, chocolates, pastries and cakes crafted with the world’s finest single-origin ingredients.
+          <p className="text-xs sm:text-sm text-champagne/80 font-light leading-relaxed max-w-xl mx-auto">
+            A curated selection of desserts, chocolates, pastries and cakes crafted with the finest ingredients.
           </p>
         </div>
 
-        {/* 1. 3D Perspective Curved Carousel */}
-        <div className="my-4 sm:my-6">
-          <MenuCarousel3D
-            products={carouselProducts.length > 0 ? carouselProducts : categoryProducts}
-            onSelectProduct={(product) => setSelectedProduct(product)}
-            favorites={favorites}
-            onToggleFavorite={toggleFavorite}
-          />
-        </div>
-
-        {/* 2. Category Selector Bar (All 9 Categories) */}
-        <div className="my-8 sm:my-12">
+        {/* 2. Category Navigation (Placed SEPARATELY ABOVE the 3D Carousel) */}
+        <div className="relative z-30">
           <CategoryBar
             activeCategory={activeCategory}
             onSelectCategory={(catId) => setActiveCategory(catId)}
           />
         </div>
 
-        {/* 3. Secondary Horizontal Product Slider */}
-        <div className="mt-6 sm:mt-10">
+        {/* 3. Main 3D Perspective Product Carousel */}
+        <div className="relative z-20 py-2 sm:py-6">
+          <MenuCarousel3D
+            products={categoryProducts}
+            onSelectProduct={(product) => setSelectedProduct(product)}
+            favorites={favorites}
+            onToggleFavorite={toggleFavorite}
+          />
+        </div>
+
+        {/* 4. Secondary Product Collection */}
+        <div className="relative z-20 pt-4">
           <SecondaryProductSlider
-            products={sliderProducts}
-            categoryTitle={`${currentCategoryObj?.name || 'All'} Collection`}
+            products={categoryProducts}
+            categoryTitle={currentCategoryObj?.name || 'Creations'}
             onSelectProduct={(product) => setSelectedProduct(product)}
             favorites={favorites}
             onToggleFavorite={toggleFavorite}
@@ -106,4 +87,3 @@ export default function MenuPage() {
     </div>
   );
 }
-

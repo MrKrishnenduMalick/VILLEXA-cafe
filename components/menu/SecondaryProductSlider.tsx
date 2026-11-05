@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import { Product } from '@/data/products';
-import { ChevronLeft, ChevronRight, Sparkles, Heart } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 
 interface SecondaryProductSliderProps {
   products: Product[];
@@ -15,7 +15,7 @@ interface SecondaryProductSliderProps {
 
 export default function SecondaryProductSlider({
   products,
-  categoryTitle = 'Featured Creations',
+  categoryTitle = 'Tarts',
   onSelectProduct,
   favorites,
   onToggleFavorite,
@@ -37,19 +37,16 @@ export default function SecondaryProductSlider({
 
   return (
     <div className="relative w-full max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      {/* Header with Title & Navigation Controls */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <span className="text-[11px] uppercase tracking-[0.25em] text-gold-400 font-medium flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" /> Curated Selection
-          </span>
-          <h3 className="text-xl sm:text-2xl font-serif text-white mt-1 capitalize">
-            {categoryTitle}
+      {/* Header Matching Reference Image 1 & 2 */}
+      <div className="flex items-center justify-between mb-6 pb-2 border-b border-gold-500/15">
+        <div className="flex items-baseline gap-3">
+          <h3 className="text-xl sm:text-2xl font-serif text-white tracking-wide">
+            More from {categoryTitle}
           </h3>
         </div>
 
-        {/* Arrow Controls */}
         <div className="flex items-center gap-2">
+          {/* Arrow Controls */}
           <button
             onClick={() => scroll('left')}
             aria-label="Scroll left"
@@ -78,16 +75,16 @@ export default function SecondaryProductSlider({
             <div
               key={item.id}
               onClick={() => onSelectProduct(item)}
-              className="group relative flex-none w-[220px] sm:w-[250px] md:w-[270px] rounded-2xl glass-gold-card p-3 sm:p-4 cursor-pointer hover:-translate-y-1.5 transition-all duration-300"
+              className="group relative flex-none w-[200px] sm:w-[230px] md:w-[250px] rounded-2xl glass-gold-card p-3 sm:p-4 cursor-pointer hover:-translate-y-1.5 transition-all duration-300"
             >
               {/* Product Photo */}
-              <div className="relative w-full h-[150px] sm:h-[170px] rounded-xl overflow-hidden mb-3 border border-gold-500/20 shadow-md">
+              <div className="relative w-full h-[140px] sm:h-[160px] rounded-xl overflow-hidden mb-3 border border-gold-500/20 shadow-md bg-eclat-950/70">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 640px) 220px, 270px"
+                  sizes="(max-width: 640px) 200px, 250px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/70 via-transparent to-transparent pointer-events-none" />
 
@@ -97,7 +94,7 @@ export default function SecondaryProductSlider({
                     e.stopPropagation();
                     onToggleFavorite(item.id);
                   }}
-                  className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/60 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:bg-gold-500/20 transition-all duration-200"
+                  className="absolute top-2 right-2 w-7 h-7 rounded-full bg-black/60 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:bg-gold-500/20 transition-all duration-200"
                   aria-label="Save to favourites"
                 >
                   <Heart
@@ -118,7 +115,7 @@ export default function SecondaryProductSlider({
                     ₹{item.price}
                   </span>
                 </div>
-                <p className="text-[11px] sm:text-xs text-champagne/70 line-clamp-1">
+                <p className="text-[11px] sm:text-xs text-champagne/70 line-clamp-1 font-light">
                   {item.description}
                 </p>
               </div>
@@ -129,4 +126,3 @@ export default function SecondaryProductSlider({
     </div>
   );
 }
-

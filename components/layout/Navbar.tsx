@@ -52,14 +52,14 @@ export default function Navbar() {
             <Logo size={isScrolled ? 'sm' : 'md'} />
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden xl:flex items-center space-x-1 lg:space-x-1.5">
+            <nav className="hidden lg:flex items-center space-x-1 xl:space-x-1.5">
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="relative px-3.5 py-1.5 text-xs lg:text-[13px] font-medium tracking-wide transition-colors duration-200"
+                    className="relative px-2.5 xl:px-3.5 py-1.5 text-xs xl:text-[13px] font-medium tracking-wide transition-colors duration-200"
                   >
                     {isActive ? (
                       <motion.span
@@ -86,7 +86,7 @@ export default function Navbar() {
             <div className="hidden sm:flex items-center gap-3">
               <button
                 onClick={() => setIsReservationOpen(true)}
-                className="group relative inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-gold-400 via-gold-300 to-gold-500 text-eclat-950 shadow-[0_0_20px_rgba(223,166,42,0.35)] hover:shadow-[0_0_25px_rgba(223,166,42,0.6)] hover:scale-105 active:scale-95 transition-all duration-300"
+                className="group relative inline-flex items-center gap-2 px-4 xl:px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-gold-400 via-gold-300 to-gold-500 text-eclat-950 shadow-[0_0_20px_rgba(223,166,42,0.35)] hover:shadow-[0_0_25px_rgba(223,166,42,0.6)] hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 <span>Reserve a Table</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -94,7 +94,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile / Tablet Menu Button */}
-            <div className="flex xl:hidden items-center gap-2">
+            <div className="flex lg:hidden items-center gap-2">
               <button
                 onClick={() => setIsReservationOpen(true)}
                 className="sm:hidden px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-gold-400 text-eclat-950"
@@ -120,7 +120,7 @@ export default function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="xl:hidden bg-eclat-950/98 backdrop-blur-xl border-b border-gold-500/20 px-6 py-6 shadow-2xl"
+              className="lg:hidden bg-eclat-950/98 backdrop-blur-xl border-b border-gold-500/20 px-6 py-6 shadow-2xl"
             >
               <div className="flex flex-col space-y-3">
                 {NAV_LINKS.map((link) => {

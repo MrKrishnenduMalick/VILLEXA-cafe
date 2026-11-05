@@ -3,124 +3,96 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Heart } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { PRODUCTS, Product } from '@/data/products';
-import ProductDetailModal from '../menu/ProductDetailModal';
 
 export default function SignaturePreview() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [favorites, setFavorites] = useState<string[]>([]);
+  // Get exactly the 3 signature creations shown in the reference: The Cherry, Dark Knight, Cream Mania
+  const signatureItems: Product[] = [
+    PRODUCTS.find((p) => p.id === 'the-cherry') || PRODUCTS[0],
+    PRODUCTS.find((p) => p.id === 'dark-knight-brownie') || PRODUCTS[1],
+    PRODUCTS.find((p) => p.id === 'cream-mania') || PRODUCTS[2],
+  ];
 
-  // Get signatures: The Cherry, Dark Knight (Brownie/Cookie), Cream Mania
-  const signatures = PRODUCTS.filter((p) => p.isSignature).slice(0, 3);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + signatureItems.length) % signatureItems.length);
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % signatureItems.length);
   };
 
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-80 bg-eclat-700/15 blur-[120px] pointer-events-none" />
-
-      {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-        <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs uppercase tracking-[0.28em] text-gold-400 font-medium">
-          <Sparkles className="w-3.5 h-3.5" /> Iconic Masterpieces
-        </span>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-white">
-          Signature Collection
-        </h2>
-        <p className="text-xs sm:text-sm text-champagne/80 font-light leading-relaxed">
-          Our most loved and celebrated creations, refined to absolute perfection.
+    <section className="relative py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+      {/* Elegant Header with Horizontal Gold Flourish Lines */}
+      <div className="text-center max-w-xl mx-auto mb-8 space-y-1.5">
+        <div className="flex items-center justify-center gap-4">
+          <span className="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-gold-400/60" />
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-white tracking-wide">
+            Signature Creations
+          </h2>
+          <span className="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-gold-400/60" />
+        </div>
+        <p className="text-xs sm:text-sm text-champagne/75 font-light tracking-wide">
+          Our most loved and celebrated desserts.
         </p>
       </div>
 
-      {/* 3 Prominent Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        {signatures.map((product) => {
-          const isFavorited = favorites.includes(product.id);
-          return (
-            <div
-              key={product.id}
-              onClick={() => setSelectedProduct(product)}
-              className="group relative rounded-3xl glass-gold-card p-6 flex flex-col justify-between cursor-pointer hover:-translate-y-2 transition-all duration-400"
-            >
-              {/* Top Row: Badge + Wishlist */}
-              <div className="flex items-center justify-between mb-4">
-                <span className="px-3 py-1 rounded-full text-[10px] uppercase font-semibold tracking-wider bg-gold-500/20 border border-gold-400/50 text-gold-300">
-                  Signature
-                </span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleFavorite(product.id);
-                  }}
-                  className="w-8 h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:bg-gold-500/20 transition-all duration-200"
-                  aria-label="Save to favourites"
-                >
-                  <Heart
-                    className={`w-4 h-4 ${
-                      isFavorited ? 'fill-rose-500 text-rose-500' : ''
-                    }`}
-                  />
-                </button>
-              </div>
+      {/* Carousel Container with Arrow Navigation */}
+      <div className="relative max-w-5xl mx-auto flex items-center">
+        {/* Left Arrow */}
+        <button
+          onClick={handlePrev}
+          aria-label="Previous signature dessert"
+          className="shrink-0 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/60 border border-gold-400/40 text-gold-300 hover:text-white hover:bg-gold-500/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center mr-2 sm:mr-4 shadow-lg backdrop-blur-md"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
 
-              {/* Product Photograph with halo */}
-              <div className="relative w-full aspect-square rounded-2xl overflow-hidden my-4 border border-gold-500/25 shadow-xl">
+        {/* 3 Compact Glowing Dessert Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full">
+          {signatureItems.map((product) => (
+            <Link
+              key={product.id}
+              href="/menu"
+              className="group relative rounded-2xl glass-gold-card p-4 sm:p-5 flex flex-col justify-between hover:-translate-y-1.5 transition-all duration-300"
+            >
+              {/* Image Frame with glowing border */}
+              <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden mb-3 border border-gold-500/30 shadow-xl bg-eclat-950/60">
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  sizes="(max-width: 768px) 100vw, 380px"
+                  sizes="(max-width: 640px) 100vw, 320px"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/75 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/70 via-transparent to-transparent pointer-events-none" />
               </div>
 
-              {/* Product Info */}
-              <div className="space-y-2 pt-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="text-xl font-serif text-white group-hover:text-gold-200 transition-colors">
-                    {product.name}
-                  </h3>
-                  <span className="text-xl font-serif text-gold-300 font-medium">
-                    ₹{product.price}
-                  </span>
-                </div>
-                <p className="text-xs text-champagne/75 line-clamp-2 leading-relaxed">
-                  {product.description}
+              {/* Title & Price */}
+              <div className="text-center space-y-1">
+                <h3 className="text-base sm:text-lg font-serif text-white group-hover:text-gold-200 transition-colors">
+                  {product.name}
+                </h3>
+                <p className="text-sm font-serif text-gold-300 font-medium">
+                  ₹{product.price}
                 </p>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            </Link>
+          ))}
+        </div>
 
-      {/* Bottom CTA Button */}
-      <div className="text-center mt-12">
-        <Link
-          href="/signature-collection"
-          className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full btn-outline-gold text-xs sm:text-sm uppercase tracking-wider font-medium"
+        {/* Right Arrow */}
+        <button
+          onClick={handleNext}
+          aria-label="Next signature dessert"
+          className="shrink-0 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/60 border border-gold-400/40 text-gold-300 hover:text-white hover:bg-gold-500/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center ml-2 sm:mr-0 sm:ml-4 shadow-lg backdrop-blur-md"
         >
-          <span>View Full Collection</span>
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
-
-      {/* Product Detail Modal */}
-      <ProductDetailModal
-        product={selectedProduct}
-        isOpen={!!selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        favorites={favorites}
-        onToggleFavorite={toggleFavorite}
-        isFavorited={selectedProduct ? favorites.includes(selectedProduct.id) : false}
-      />
     </section>
   );
 }
-
