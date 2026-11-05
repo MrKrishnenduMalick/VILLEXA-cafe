@@ -5,8 +5,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '../ui/Logo';
 import ReservationModal from './ReservationModal';
-import { Menu as MenuIcon, X, ArrowRight, Sparkles } from 'lucide-react';
+import { Menu as MenuIcon, X, ArrowRight, Sparkles, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useWishlist } from '@/context/WishlistContext';
 
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
@@ -24,6 +25,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
+  const { openWishlist, wishlistCount } = useWishlist();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,8 +84,24 @@ export default function Navbar() {
               })}
             </nav>
 
-            {/* Desktop Right CTA: Reserve a Table */}
-            <div className="hidden sm:flex items-center gap-3">
+            {/* Desktop Right CTAs: Wishlist + Reserve a Table */}
+            <div className="hidden sm:flex items-center gap-2.5">
+              {/* Wishlist Button */}
+              <button
+                onClick={openWishlist}
+                className="relative px-3 py-2 rounded-full border border-gold-400/35 bg-eclat-900/80 hover:bg-gold-500/20 text-champagne hover:text-white transition-all flex items-center gap-1.5 shadow-md"
+                title="View Saved Wishlist"
+                aria-label="View Saved Wishlist"
+              >
+                <Heart className="w-3.5 h-3.5 fill-gold-400/30 text-gold-300" />
+                <span className="text-xs font-medium tracking-wide">Wishlist</span>
+                {wishlistCount > 0 && (
+                  <span className="w-4 h-4 rounded-full bg-gold-400 text-eclat-950 font-bold text-[10px] flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
+              </button>
+
               <button
                 onClick={() => setIsReservationOpen(true)}
                 className="group relative inline-flex items-center gap-2 px-4 xl:px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-gold-400 via-gold-300 to-gold-500 text-eclat-950 shadow-[0_0_20px_rgba(223,166,42,0.35)] hover:shadow-[0_0_25px_rgba(223,166,42,0.6)] hover:scale-105 active:scale-95 transition-all duration-300"
@@ -95,6 +113,19 @@ export default function Navbar() {
 
             {/* Mobile / Tablet Menu Button */}
             <div className="flex lg:hidden items-center gap-2">
+              <button
+                onClick={openWishlist}
+                className="relative p-2 rounded-full border border-gold-400/30 bg-eclat-900 text-gold-300"
+                aria-label="Wishlist"
+              >
+                <Heart className="w-4 h-4" />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gold-400 text-eclat-950 font-bold text-[9px] flex items-center justify-center">
+                    {wishlistCount}
+                  </span>
+                )}
+              </button>
+
               <button
                 onClick={() => setIsReservationOpen(true)}
                 className="sm:hidden px-3 py-1.5 rounded-full text-[11px] font-semibold uppercase tracking-wider bg-gold-400 text-eclat-950"
@@ -143,6 +174,17 @@ export default function Navbar() {
                 })}
 
                 <div className="pt-4 border-t border-gold-500/20 flex flex-col gap-3">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      openWishlist();
+                    }}
+                    className="w-full py-2.5 px-4 rounded-full border border-gold-400/40 bg-eclat-900 text-gold-200 text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2"
+                  >
+                    <Heart className="w-4 h-4 fill-gold-400/30 text-gold-400" />
+                    <span>View Wishlist ({wishlistCount})</span>
+                  </button>
+
                   <button
                     onClick={() => {
                       setMobileMenuOpen(false);

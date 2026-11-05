@@ -1,6 +1,5 @@
 import React from 'react';
 import Hero from '@/components/home/Hero';
-import FeatureStrip from '@/components/home/FeatureStrip';
 import SignaturePreview from '@/components/home/SignaturePreview';
 import CafeExperiencePreview from '@/components/home/CafeExperiencePreview';
 import CustomCakesPreview from '@/components/home/CustomCakesPreview';
@@ -8,12 +7,9 @@ import FinalBrandCTA from '@/components/home/FinalBrandCTA';
 
 export default function HomePage() {
   return (
-    <div className="space-y-6 sm:space-y-10">
-      {/* 1. Cinematic Dessert Hero with Maison Éclat Branding */}
+    <div className="space-y-8 sm:space-y-12">
+      {/* 1. Cinematic Dessert Hero with Maison Éclat Branding & 4 Glass Feature Pedestals */}
       <Hero />
-
-      {/* Quick Category Feature Strip */}
-      <FeatureStrip />
 
       {/* 2. Compact Signature Creations Showcase */}
       <SignaturePreview />

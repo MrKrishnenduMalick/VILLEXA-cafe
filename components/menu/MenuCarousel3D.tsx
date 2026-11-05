@@ -3,21 +3,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { Product } from '@/data/products';
-import { ChevronLeft, ChevronRight, Heart, MoreHorizontal, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Sparkles, Eye } from 'lucide-react';
+import { useWishlist } from '@/context/WishlistContext';
 
 interface MenuCarousel3DProps {
   products: Product[];
   onSelectProduct: (product: Product) => void;
-  favorites: string[];
-  onToggleFavorite: (id: string) => void;
+  favorites?: string[];
+  onToggleFavorite?: (id: string) => void;
 }
 
 export default function MenuCarousel3D({
   products,
   onSelectProduct,
-  favorites,
-  onToggleFavorite,
 }: MenuCarousel3DProps) {
+  const { isInWishlist, toggleWishlist } = useWishlist();
   const [activeIndex, setActiveIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -58,7 +58,6 @@ export default function MenuCarousel3D({
     if (Math.abs(diff) > 8) {
       hasDraggedRef.current = true;
     }
-    // Dampen drag offset for realistic tactile resistance
     setDragOffset(diff * 0.45);
   };
 
@@ -112,24 +111,27 @@ export default function MenuCarousel3D({
     }
   };
 
-  const handleCardClick = (index: number, e: React.MouseEvent) => {
-    // Suppress accidental click if user was dragging
+  const handleCardClick = (index: number, item: Product, e: React.MouseEvent) => {
     if (hasDraggedRef.current) {
       e.preventDefault();
       e.stopPropagation();
       return;
     }
 
-    if (index !== activeIndex) {
+    if (index === activeIndex) {
+      // Center card clicked -> open product detail modal
+      onSelectProduct(item);
+    } else {
+      // Side card clicked -> bring to center
       setActiveIndex(index);
     }
   };
 
   return (
-    <div className="relative w-full max-w-7xl mx-auto py-1 select-none">
-      {/* 3D Perspective Stage: Reduced height and zero extra margin to fit in initial viewport */}
+    <div className="relative w-full max-w-7xl mx-auto select-none">
+      {/* 3D Perspective Stage: Vertically centered cards with zero top/bottom overflow */}
       <div
-        className="carousel-stage-3d relative h-[400px] sm:h-[430px] md:h-[450px] flex items-center justify-center cursor-grab active:cursor-grabbing overflow-visible"
+        className="carousel-stage-3d relative h-[440px] sm:h-[470px] md:h-[490px] flex items-center justify-center cursor-grab active:cursor-grabbing"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -145,7 +147,7 @@ export default function MenuCarousel3D({
           if (diff < -count / 2) diff += count;
 
           const isCenter = diff === 0;
-          const isFavorited = favorites.includes(item.id);
+          const isFavorited = isInWishlist(item.id);
 
           // Calculate 3D transforms based on curved perspective arc
           let translateX = '0%';
@@ -206,7 +208,6 @@ export default function MenuCarousel3D({
             opacity = 0.40;
             zIndex = 10;
           } else {
-            // Hidden from viewport
             visibility = 'hidden';
             opacity = 0;
             zIndex = 1;
@@ -216,58 +217,56 @@ export default function MenuCarousel3D({
           return (
             <div
               key={item.id}
-              onClick={(e) => handleCardClick(index, e)}
+              onClick={(e) => handleCardClick(index, item, e)}
               style={{
-                transform: `translateX(${translateX}) scale(${scale}) translateZ(${translateZ}) rotateY(${rotateY})`,
+                // CRITICAL FIX: translateY(-50%) explicitly included in inline transform to vertically center card in the stage!
+                transform: `translateY(-50%) translateX(${translateX}) scale(${scale}) translateZ(${translateZ}) rotateY(${rotateY})`,
                 opacity,
                 zIndex,
                 visibility,
                 transition: isDragging ? 'none' : 'all 0.55s cubic-bezier(0.2, 0.8, 0.25, 1)',
               }}
-              className={`absolute top-1/2 -translate-y-1/2 w-[270px] sm:w-[310px] md:w-[345px] rounded-3xl transition-shadow ${
+              className={`absolute top-1/2 w-[270px] sm:w-[310px] md:w-[340px] rounded-3xl transition-shadow cursor-pointer ${
                 isCenter
-                  ? 'center-card-glow cursor-default'
-                  : 'glass-gold-card hover:opacity-95 cursor-pointer'
+                  ? 'center-card-glow'
+                  : 'glass-gold-card hover:opacity-95'
               }`}
             >
               <div className="relative p-4 sm:p-5 flex flex-col justify-between h-[370px] sm:h-[400px] md:h-[420px]">
-                {/* Top Controls on Center Card */}
+                {/* Top Controls on Card */}
                 <div className="flex items-center justify-between z-10">
                   {item.isSignature ? (
                     <span className="px-2.5 py-0.5 rounded-full text-[9px] uppercase font-semibold tracking-wider bg-gold-500/25 border border-gold-400/50 text-gold-300 backdrop-blur-sm">
                       Signature
                     </span>
+                  ) : item.isEggless ? (
+                    <span className="px-2.5 py-0.5 rounded-full text-[9px] uppercase font-semibold tracking-wider bg-emerald-950/60 border border-emerald-500/40 text-emerald-300">
+                      Eggless
+                    </span>
                   ) : (
                     <div />
                   )}
 
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleFavorite(item.id);
-                      }}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:border-gold-300 transition-all duration-200"
-                      aria-label="Add to favourites"
-                    >
-                      <Heart
-                        className={`w-3.5 h-3.5 transition-colors ${
-                          isFavorited ? 'fill-rose-500 text-rose-500' : ''
-                        }`}
-                      />
-                    </button>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectProduct(item);
-                      }}
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:border-gold-300 transition-all duration-200"
-                      aria-label="View product details"
-                    >
-                      <MoreHorizontal className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+                  {/* Wishlist Heart Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleWishlist(item.id);
+                    }}
+                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                      isFavorited
+                        ? 'bg-rose-500/20 border-rose-500 text-rose-400'
+                        : 'bg-black/50 border-gold-400/30 text-champagne hover:text-white hover:border-gold-300'
+                    }`}
+                    title={isFavorited ? 'In Wishlist' : 'Add to Wishlist'}
+                    aria-label="Wishlist toggle"
+                  >
+                    <Heart
+                      className={`w-3.5 h-3.5 transition-colors ${
+                        isFavorited ? 'fill-rose-500 text-rose-500' : ''
+                      }`}
+                    />
+                  </button>
                 </div>
 
                 {/* Central Card Internal Arrow Buttons (Vertically Aligned with Carousel) */}
@@ -279,7 +278,7 @@ export default function MenuCarousel3D({
                         handlePrev();
                       }}
                       aria-label="Previous product"
-                      className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/70 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
@@ -290,7 +289,7 @@ export default function MenuCarousel3D({
                         handleNext();
                       }}
                       aria-label="Next product"
-                      className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/70 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-8 h-8 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/30 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-lg backdrop-blur-md"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -298,32 +297,31 @@ export default function MenuCarousel3D({
                 )}
 
                 {/* Center Dessert Photograph */}
-                <div className="relative w-full h-[155px] sm:h-[180px] md:h-[195px] my-auto flex items-center justify-center">
-                  {/* Subtle warm amber halo behind center dessert */}
+                <div className="relative w-full h-[160px] sm:h-[185px] md:h-[200px] my-auto flex items-center justify-center">
                   {isCenter && (
-                    <div className="absolute w-40 h-40 rounded-full bg-gold-500/20 blur-2xl pointer-events-none animate-pulse-slow" />
+                    <div className="absolute w-44 h-44 rounded-full bg-gold-500/20 blur-2xl pointer-events-none" />
                   )}
 
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-eclat-950/70">
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl bg-eclat-950/70 border border-gold-500/20">
                     <Image
                       src={item.image}
                       alt={item.name}
                       fill
-                      className="object-cover transition-transform duration-700 hover:scale-105"
-                      sizes="(max-width: 640px) 270px, (max-width: 768px) 310px, 345px"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 640px) 270px, (max-width: 768px) 310px, 340px"
                       priority={isCenter}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-eclat-950/70 via-transparent to-transparent pointer-events-none" />
                   </div>
                 </div>
 
-                {/* Product Name, Price & Description */}
+                {/* Product Name, Price & Description (ONLY show the price, NO add to order) */}
                 <div className="mt-auto space-y-1.5 z-10">
                   <div className="flex items-baseline justify-between gap-2">
-                    <h3 className="text-base sm:text-lg md:text-xl font-serif text-white truncate">
+                    <h3 className="text-base sm:text-lg font-serif text-white truncate">
                       {item.name}
                     </h3>
-                    <span className="text-base sm:text-lg md:text-xl font-serif text-gold-300 font-medium shrink-0">
+                    <span className="text-base sm:text-lg font-serif text-gold-300 font-medium shrink-0">
                       ₹{item.price}
                     </span>
                   </div>
@@ -332,24 +330,24 @@ export default function MenuCarousel3D({
                     {item.description}
                   </p>
 
-                  {/* Center Card Action Button */}
+                  {/* Center Card Action: View Details (Opens Modal, NO add to cart) */}
                   {isCenter ? (
-                    <div className="pt-1.5">
+                    <div className="pt-2 flex items-center gap-2">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          onToggleFavorite(item.id);
+                          onSelectProduct(item);
                         }}
                         className="w-full btn-gold py-2 rounded-full text-xs font-semibold uppercase tracking-[0.16em] flex items-center justify-center gap-1.5 shadow-md"
                       >
-                        <Heart className={`w-3.5 h-3.5 ${isFavorited ? 'fill-current' : ''}`} />
-                        <span>{isFavorited ? 'In Favourites' : 'Add to Favourites'}</span>
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>View Details</span>
                       </button>
                     </div>
                   ) : (
-                    <div className="pt-0.5 text-center">
+                    <div className="pt-1 text-center">
                       <span className="text-[10px] text-gold-400/80 group-hover:text-gold-200 transition-colors uppercase tracking-wider font-medium">
-                        Click to Select
+                        Click to Focus
                       </span>
                     </div>
                   )}
@@ -363,7 +361,7 @@ export default function MenuCarousel3D({
         <button
           onClick={handlePrev}
           aria-label="Previous dessert"
-          className="absolute left-1 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
+          className="absolute left-1 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-black/80 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -371,14 +369,14 @@ export default function MenuCarousel3D({
         <button
           onClick={handleNext}
           aria-label="Next dessert"
-          className="absolute right-1 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-black/75 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
+          className="absolute right-1 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 rounded-full bg-black/80 border border-gold-400/50 text-gold-300 hover:text-white hover:bg-gold-500/25 hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-xl shadow-black/80 backdrop-blur-md"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
       </div>
 
       {/* Pagination Indicator Dots */}
-      <div className="flex items-center justify-center gap-1.5 mt-2 sm:mt-3">
+      <div className="flex items-center justify-center gap-1.5 mt-2">
         {products.map((p, idx) => {
           const isActive = idx === activeIndex;
           return (

@@ -2,27 +2,15 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Sparkles, Heart, Plus, Check } from 'lucide-react';
+import { Sparkles, Heart, Eye } from 'lucide-react';
 import { PRODUCTS, Product } from '@/data/products';
 import ProductDetailModal from '@/components/menu/ProductDetailModal';
+import { useWishlist } from '@/context/WishlistContext';
 
 export default function SignatureCollectionPage() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [favorites, setFavorites] = useState<string[]>(['the-cherry']);
   const [activeFilter, setActiveFilter] = useState<'All' | 'Eggless' | 'Tarts' | 'Chocolates' | 'Bakes'>('All');
-  const [addedItem, setAddedItem] = useState<string | null>(null);
-
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
-  const handleOrderAdd = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    setAddedItem(id);
-    setTimeout(() => setAddedItem(null), 2000);
-  };
+  const { isInWishlist, toggleWishlist } = useWishlist();
 
   const signatureProducts = PRODUCTS.filter((p) => p.isSignature);
 
@@ -46,46 +34,46 @@ export default function SignatureCollectionPage() {
       {/* Background glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-3/4 h-96 bg-gold-500/10 blur-[130px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.28em] text-gold-400 font-medium">
-            <Sparkles className="w-3.5 h-3.5" /> Iconic Hall of Fame
+            <Sparkles className="w-3.5 h-3.5" /> Haute Pâtisserie
           </span>
-          <h1 className="text-4xl sm:text-6xl font-serif text-white tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-serif text-white tracking-tight">
             Signature Collection
           </h1>
           <p className="text-xs sm:text-sm text-champagne/80 font-light leading-relaxed">
-            Our most loved and celebrated creations, refined to absolute perfection. Each piece embodies our philosophy of sensory balance, luxury textures, and noble origin cacao.
+            Our most celebrated and iconic creations, crafted with world-renowned ingredients and obsessive attention to detail.
           </p>
-
-          {/* Filters */}
-          <div className="flex items-center justify-center flex-wrap gap-2 pt-4">
-            {(['All', 'Eggless', 'Tarts', 'Chocolates', 'Bakes'] as const).map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-300 ${
-                  activeFilter === filter
-                    ? 'bg-gold-400 text-eclat-950 font-semibold shadow-[0_0_15px_rgba(223,166,42,0.4)]'
-                    : 'bg-eclat-900 border border-gold-500/20 text-champagne/70 hover:text-white hover:border-gold-400/40'
-                }`}
-              >
-                {filter === 'All' ? 'All Signatures' : filter}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Product Grid */}
+        {/* Filter Pills */}
+        <div className="flex items-center justify-center gap-2 flex-wrap">
+          {(['All', 'Eggless', 'Tarts', 'Chocolates', 'Bakes'] as const).map((filter) => (
+            <button
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${
+                activeFilter === filter
+                  ? 'bg-gold-500/20 border border-gold-400 text-gold-200 shadow-[0_0_12px_rgba(223,166,42,0.3)]'
+                  : 'bg-eclat-900/60 border border-gold-400/20 text-champagne/70 hover:text-white hover:border-gold-400/40'
+              }`}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+
+        {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filtered.map((product) => {
-            const isFavorited = favorites.includes(product.id);
+            const isFavorited = isInWishlist(product.id);
             return (
               <div
                 key={product.id}
                 onClick={() => setSelectedProduct(product)}
-                className="group relative rounded-3xl glass-gold-card p-6 flex flex-col justify-between cursor-pointer hover:-translate-y-2 transition-all duration-400"
+                className="group relative rounded-3xl glass-gold-card p-5 sm:p-6 flex flex-col justify-between hover:-translate-y-2 transition-all duration-300 cursor-pointer"
               >
                 {/* Badges + Heart */}
                 <div className="flex items-center justify-between mb-4">
@@ -103,10 +91,15 @@ export default function SignatureCollectionPage() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleFavorite(product.id);
+                      toggleWishlist(product.id);
                     }}
-                    className="w-8 h-8 rounded-full bg-black/50 border border-gold-400/30 flex items-center justify-center text-champagne hover:text-white hover:bg-gold-500/20 transition-all duration-200"
-                    aria-label="Save to favourites"
+                    className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-200 ${
+                      isFavorited
+                        ? 'bg-rose-500/20 border-rose-500 text-rose-400'
+                        : 'bg-black/50 border-gold-400/30 text-champagne hover:text-white hover:bg-gold-500/20'
+                    }`}
+                    title={isFavorited ? 'In Wishlist' : 'Add to Wishlist'}
+                    aria-label="Save to wishlist"
                   >
                     <Heart
                       className={`w-4 h-4 ${
@@ -117,7 +110,7 @@ export default function SignatureCollectionPage() {
                 </div>
 
                 {/* Product Photograph */}
-                <div className="relative w-full aspect-square rounded-2xl overflow-hidden my-3 border border-gold-500/25 shadow-xl">
+                <div className="relative w-full aspect-square rounded-2xl overflow-hidden my-3 border border-gold-500/25 shadow-xl bg-eclat-950">
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -145,20 +138,14 @@ export default function SignatureCollectionPage() {
 
                   <div className="pt-3">
                     <button
-                      onClick={(e) => handleOrderAdd(e, product.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProduct(product);
+                      }}
                       className="w-full btn-gold py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2"
                     >
-                      {addedItem === product.id ? (
-                        <>
-                          <Check className="w-3.5 h-3.5 text-eclat-950" />
-                          <span>Added to Order</span>
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="w-3.5 h-3.5" />
-                          <span>Add to Order</span>
-                        </>
-                      )}
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>View Details</span>
                     </button>
                   </div>
                 </div>
@@ -168,16 +155,12 @@ export default function SignatureCollectionPage() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Product Detail Modal */}
       <ProductDetailModal
         product={selectedProduct}
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
-        favorites={favorites}
-        onToggleFavorite={toggleFavorite}
-        isFavorited={selectedProduct ? favorites.includes(selectedProduct.id) : false}
       />
     </div>
   );
 }
-

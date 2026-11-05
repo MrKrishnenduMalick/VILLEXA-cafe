@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import ClientProviders from '@/components/providers/ClientProviders';
 
 export const metadata: Metadata = {
   title: 'Maison Éclat | Artisan Dessert Café',
@@ -26,9 +27,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-eclat-950 text-champagne antialiased flex flex-col justify-between selection:bg-gold-500 selection:text-eclat-950 font-sans">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <ClientProviders>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </ClientProviders>
       </body>
     </html>
   );
